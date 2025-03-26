@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>botanicpark_map</title>
+  <title>온더덩 지도</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
@@ -58,10 +58,10 @@
     };
 
     const locations = [
-    { name: "해봄정원", lat: 37.57017, lng: 126.83621 },
-    { name: "거인의 정원", lat: 37.57068, lng: 126.83443 },
-    { name: "식물문화센터", lat: 37.57002, lng: 126.83499 },
-    { name: "판매온실", lat: 37.56965, lng: 126.83589 },
+      { name: "온더덩", lat: 37.50089, lng: 126.79009 },
+      { name: "삼보테크노타워", lat: 37.50200, lng: 126.79139 },
+      { name: "금동국수", lat: 37.50240, lng: 126.78971 },
+      { name: "춘의테크노파크2차", lat: 37.50166, lng: 126.78835 },
     ];
 
     // 반경 원 및 마커 설정
@@ -69,8 +69,8 @@
       L.marker([loc.lat, loc.lng], {
         icon: icons[loc.name] || undefined
       }).addTo(map).bindPopup(
-        loc.name === "해봄정원"
-          ? "<div class='popup-label'><a href='https://botanicpark.seoul.go.kr/front/main.do' target='_blank' style='color:#333;text-decoration:underline;'>" + loc.name + "</a></div>"
+        loc.name === "온더덩"
+          ? "<div class='popup-label'><a href='https://onthedung.com/' target='_blank' style='color:#333;text-decoration:underline;'>" + loc.name + "</a></div>"
           : "<div class='popup-label'>" + loc.name + "</div>"
       );
       L.circle([loc.lat, loc.lng], {
@@ -117,8 +117,8 @@
       locations.forEach(loc => {
         const dist = getDistance(userLat, userLng, loc.lat, loc.lng);
         if (dist < 70 && !shownPopups[loc.name]) {
-          const content = loc.name === "해봄정원"
-            ? "<div class='popup-label'><a href='https://botanicpark.seoul.go.kr/front/main.do' target='_blank'>" + loc.name + "</a></div>"
+          const content = loc.name === "온더덩"
+            ? "<div class='popup-label'><a href='https://onthedung.com/' target='_blank'>" + loc.name + "</a></div>"
             : "<div class='popup-label'>" + loc.name + "</div>";
           L.popup()
             .setLatLng([loc.lat, loc.lng])
@@ -142,7 +142,7 @@
       [37.50554, 126.78362],  // top-left (북서)
       [37.49591, 126.79557]   // bottom-right (남동)
     ];
-    L.imageOverlay('botanicpark_map.jpeg', imageBounds).addTo(map);
+    L.imageOverlay('haebom_map.jpeg', imageBounds).addTo(map);
 
     map.locate({ setView: true, maxZoom: 18, watch: true });
   </script>
