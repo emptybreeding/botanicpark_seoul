@@ -3,18 +3,13 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>botanicpark_map</title>
+  <title>오버레이 + 초록배경 지도</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     html, body, #map {
       height: 100%;
       margin: 0;
-      padding: 0;
-    }
-    .popup-label {
-      font-weight: bold;
-      color: #333;
     }
   </style>
 </head>
@@ -23,128 +18,30 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([37.50089, 126.79009], 17);
+    const map = L.map('map', {
+      zoomControl: true,
+      attributionControl: false
+    }).setView([37.5000, 126.7900], 16);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 20,
-      attribution: '&copy; OpenStreetMap contributors'
+    // 지도를 초록색으로 배경 설정
+    L.rectangle([
+      [90, -180],   // 북서쪽 끝
+      [-90, 180]    // 남동쪽 끝
+    ], {
+      color: "#00aa00",
+      fillColor: "#a9dfbf",
+      fillOpacity: 1,
+      stroke: false
     }).addTo(map);
 
-    const icons = {
-      "식물문화센터": L.icon({
-        iconUrl: 'on1.png',
-        iconSize: [66, 66],
-        iconAnchor: [24, 48],
-        popupAnchor: [0, -48]
-      }),
-      "해봄정원": L.icon({
-        iconUrl: 'st1.png',
-        iconSize: [66, 66],
-        iconAnchor: [24, 48],
-        popupAnchor: [0, -48]
-      }),
-      "거인의 정원": L.icon({
-        iconUrl: 'gold1.png',
-        iconSize: [66, 66],
-        iconAnchor: [24, 48],
-        popupAnchor: [0, -48]
-      }),
-      "판매온실": L.icon({
-        iconUrl: 'ct1.png',
-        iconSize: [66, 66],
-        iconAnchor: [24, 48],
-        popupAnchor: [0, -48]
-      })
-    };
-
-    const locations = [
-    { name: "해봄정원", lat: 37.57017, lng: 126.83621 },
-    { name: "거인의 정원", lat: 37.57068, lng: 126.83443 },
-    { name: "식물문화센터", lat: 37.57002, lng: 126.83499 },
-    { name: "판매온실", lat: 37.56965, lng: 126.83589 },
-    ];
-
-    // 반경 원 및 마커 설정
-    locations.forEach(loc => {
-      L.marker([loc.lat, loc.lng], {
-        icon: icons[loc.name] || undefined
-      }).addTo(map).bindPopup(
-        loc.name === "해봄정원"
-          ? "<div class='popup-label'><a href='https://botanicpark.seoul.go.kr/front/main.do' target='_blank' style='color:#333;text-decoration:underline;'>" + loc.name + "</a></div>"
-          : "<div class='popup-label'>" + loc.name + "</div>"
-      );
-      L.circle([loc.lat, loc.lng], {
-        radius: 0,
-        color: 'blue',
-        fillColor: '#3fa',
-        fillOpacity: 0.2
-      }).addTo(map);
-    });
-
-    let currentMarker;
-
-    const myLocationIcon = L.icon({
-      iconUrl: 'dung1.png',
-      iconSize: [60, 60],
-      iconAnchor: [30, 60],
-      className: 'animated-marker'
-    });
-
-    let shownPopups = {};
-
-    function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371000;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c;
-    }
-
-    function onLocationFound(e) {
-      const radius = e.accuracy / 2;
-
-      if (currentMarker) map.removeLayer(currentMarker);
-
-
-            currentMarker = L.marker(e.latlng, { icon: myLocationIcon }).addTo(map);
-
-      const userLat = e.latlng.lat;
-      const userLng = e.latlng.lng;
-
-      locations.forEach(loc => {
-        const dist = getDistance(userLat, userLng, loc.lat, loc.lng);
-        if (dist < 70 && !shownPopups[loc.name]) {
-          const content = loc.name === "온더덩"
-            ? "<div class='popup-label'><a href='https://botanicpark.seoul.go.kr/front/main.do' target='_blank'>" + loc.name + "</a></div>"
-            : "<div class='popup-label'>" + loc.name + "</div>";
-          L.popup()
-            .setLatLng([loc.lat, loc.lng])
-            .setContent(content)
-            .openOn(map);
-          shownPopups[loc.name] = true;
-        }
-      });
-    }
-
-    function onLocationError(e) {
-      alert("위치 정보를 가져올 수 없습니다: " + e.message);
-    }
-
-    map.on('locationfound', onLocationFound);
-    map.on('locationerror', onLocationError);
-
-    
-    // 오버레이 이미지 좌표
+    // 오버레이 이미지 영역 좌표
     const imageBounds = [
-      [37.57253, 126.82573],  // top-left (북서)
-      [37.56339, 126.83776]   // bottom-right (남동)
+      [37.50554, 126.78362], // 좌측 상단
+      [37.49591, 126.79557]  // 우측 하단
     ];
     L.imageOverlay('botanicpark_map.jpeg', imageBounds).addTo(map);
 
-    map.locate({ setView: true, maxZoom: 18, watch: true });
+    map.fitBounds(imageBounds);
   </script>
 </body>
 </html>
