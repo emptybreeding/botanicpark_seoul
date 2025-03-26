@@ -3,13 +3,17 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>오버레이 + 초록배경 지도</title>
+  <title>초록배경 + 오버레이 지도</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
-    html, body, #map {
+    html, body {
       height: 100%;
       margin: 0;
+      background-color: #a9dfbf; /* 초록 배경 */
+    }
+    #map {
+      height: 100%;
     }
   </style>
 </head>
@@ -23,18 +27,7 @@
       attributionControl: false
     }).setView([37.5000, 126.7900], 16);
 
-    // 지도를 초록색으로 배경 설정
-    L.rectangle([
-      [90, -180],   // 북서쪽 끝
-      [-90, 180]    // 남동쪽 끝
-    ], {
-      color: "#00aa00",
-      fillColor: "#a9dfbf",
-      fillOpacity: 1,
-      stroke: false
-    }).addTo(map);
-
-    // 오버레이 이미지 영역 좌표
+    // 오버레이 이미지 좌표
     const imageBounds = [
       [37.50554, 126.78362], // 좌측 상단
       [37.49591, 126.79557]  // 우측 하단
