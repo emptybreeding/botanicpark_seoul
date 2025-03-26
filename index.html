@@ -118,7 +118,7 @@
         const dist = getDistance(userLat, userLng, loc.lat, loc.lng);
         if (dist < 70 && !shownPopups[loc.name]) {
           const content = loc.name === "온더덩"
-            ? "<div class='popup-label'><a href='https://onthedung.com/' target='_blank'>" + loc.name + "</a></div>"
+            ? "<div class='popup-label'><a href='https://botanicpark.seoul.go.kr/front/main.do' target='_blank'>" + loc.name + "</a></div>"
             : "<div class='popup-label'>" + loc.name + "</div>";
           L.popup()
             .setLatLng([loc.lat, loc.lng])
